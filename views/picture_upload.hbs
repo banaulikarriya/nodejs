@@ -10,11 +10,11 @@
                         <div class="panel-body">
                             <div class="row">
                                 <div class="col-md-6">
-                           
+
                                   <form id="uploadForm" enctype="multipart/form-data" action="/pictureUpload" method="post">
                                     <div class="form-group">
                                       <input type="hidden" class="form-control" id="id"  name="id" value="{{ id }}">
-                                      <label for="pwd">Image Name:</label>
+                                      <label for="pwd">Image Data:</label>
                                       <input type="text" class="form-control" id="name" placeholder="Enter password" name="name">
                                     </div>
                                     <div class="form-group">
@@ -34,7 +34,7 @@
             </div>
                 <!-- /. ROW  -->
 
-
+ {{# if item }}
                 <div class="row">
                 <div class="col-md-12">
                     <!-- Advanced Tables -->
@@ -50,28 +50,29 @@
 
                                             <th>File Name</th>
                                             <th>Image</th>
-                                                                                      
+
                                             <th>Action </th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {{# each item }}
                                           <tr class="odd gradeX">
-                                              <td> <img src="C:\Users\Riya\Desktop\nodejs\nodejs_test\Images\"{{ this.name }} /></td>
-                                              <td>{{ this.name }}</td>                                             
-                                              
+                                              <td> <img src="file:///C:/Users/Riya/Desktop/nodejs/nodejs_test/Images/userPhoto_1520173897010_download%20(2).jpg" /></td>
+                                              <td>{{ this.name }}</td>
+
                                              <td><a href="/fsafa/{{ this._id }}" class="btn btn-primary btn-xs editbtn" title="edit">Edit</a>
-                                            <a class="btn btn-danger btn-xs" href="/delete_user/{{ this._id }}" title="delete">Delete</a></td>
+                                            <a class="btn btn-danger btn-xs" href="/delete_user/"{{ this._id }} " " title="delete">Delete</a></td>
                                           </tr>
                                       {{/each}}
-                                        
+
                                     </tbody>
                                 </table>
                             </div>
-                            
+
                         </div>
                     </div>
                     <!--End Advanced Tables -->
                 </div>
             </div>
+            {{/if}}
 </div>

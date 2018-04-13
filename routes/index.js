@@ -20,7 +20,7 @@ router.post('/insert', function(req, res, next) {
   users.addUser(item ,function(callback) {
       console.log("insert done");
       res.redirect('/get_users');
-     
+
   });
 
 });
@@ -53,12 +53,12 @@ router.get('/edit_user/:userId/', function(req,res){
 
     res.render('updateUser', doc);
   });
-  
+
 });
 
 
 router.post('/update', function(req, res, next) {
-  var item = {    
+  var item = {
     userName: req.body.name,
     email: req.body.email,
     contact: req.body.contact
@@ -68,7 +68,7 @@ router.post('/update', function(req, res, next) {
   users.updateUser(id, item ,function(callback) {
       console.log("update done");
       res.redirect('/get_users');
-     
+
   });
 
 });
@@ -79,7 +79,12 @@ router.post('/update', function(req, res, next) {
 
      var userId = req.params.id;
        picture.gallery_details(userId, function(doc) {
-        res.render('picture_upload',{"id" : userId , item : doc.file});
+         if(doc == null){
+           res.render('picture_upload',{"id" : userId , item : null});
+         }
+         else{
+           res.render('picture_upload',{"id" : userId , item : doc.file});
+         }
 
         //res.render('picture_upload',{"id" : userId }, {items: doc.file});
       });
@@ -108,7 +113,7 @@ router.post('/update', function(req, res, next) {
      },
      filename: function(req, file, callback) {
           var filename  = file.fieldname + "_" + Date.now() + "_" + file.originalname;
-    
+
 
          callback(null, filename);
      }
@@ -116,15 +121,16 @@ router.post('/update', function(req, res, next) {
 
 
   var upload = multer({ storage : Storage }).array('userPhoto',10);
-   
+
      upload(req, res, function(err) {
          if (err) {
              return res.end("Something went wrong!");
-         }  
+         }
            files = [];
 
-           var fileObj =  {               
+           var fileObj =  {
                 name: req.files[0].filename,
+                data: req.body.name,
                 mimetype: req.files[0].mimetype ,
                 size : req.files[0].size,
             };
@@ -132,20 +138,25 @@ router.post('/update', function(req, res, next) {
             files.push(fileObj);
             var item = {
               userId: req.body.id,
-              image: req.files[0].filename,
-              data: req.body.name,
               file : files
             };
-       
+
         picture.addPicture(item ,function(callback) {
             console.log("insert done");
-            
-           
+
+
         });
 
 
          /*return res.end("File uploaded sucessfully!.");*/
      });
+ });
+
+ //function to get all users from user table
+ router.get('/get_pics', function(req,res){
+   picture.get_all_picture(function(callback) {
+    res.json(callback);
+   });
  });
 
 
